@@ -1,0 +1,189 @@
+\usepackage{geometry}
+\geometry{left=3cm,right=3cm,top=2.5cm,bottom=2.5cm}
+\addtolength{\headsep}{16pt}		% 顶部空一行
+\addtolength{\textheight}{-32pt}
+\addtolength{\footskip}{16pt}		% 底部空一行
+
+% 设置默认字体
+% 中文：宋体
+\setCJKmainfont{SimSun}[AutoFakeBold,AutoFakeSlant]
+% 英文：Times New Roman
+\setmainfont{Times New Roman}
+
+% 设置所有字体
+% 宋体
+\newfontfamily{\enst}{SimSun}[AutoFakeBold,AutoFakeSlant]
+\newCJKfontfamily{\zhst}{SimSun}[AutoFakeBold,AutoFakeSlant]
+% 黑体
+\newfontfamily{\enht}{SimHei}[AutoFakeBold,AutoFakeSlant]
+\newCJKfontfamily{\zhht}{SimHei}[AutoFakeBold,AutoFakeSlant]
+% 楷体
+\newfontfamily{\enkt}{KaiTi}[AutoFakeBold,AutoFakeSlant]
+\newCJKfontfamily{\zhkt}{KaiTi}[AutoFakeBold,AutoFakeSlant]
+
+% 将字体应用到所有语言
+% 宋体
+\ifdefined\songti
+	\renewcommand{\songti}{\enst\zhst}
+\else
+	\newcommand{\songti}{\enst\zhst}
+\fi
+% 黑体
+\ifdefined\heiti
+	\renewcommand{\heiti}{\enht\zhht}
+\else
+	\newcommand{\heiti}{\enht\zhht}
+\fi
+% 楷体
+\ifdefined\kaiti
+	\renewcommand{\kaiti}{\enkt\zhkt}
+\else
+	\newcommand{\kaiti}{\enkt\zhkt}
+\fi
+
+% 设置封面格式
+\newenvironment{coverpage}{
+	\pagestyle{empty}
+	\addtolength{\headsep}{-16pt}
+	\addtolength{\textheight}{32pt}
+	\addtolength{\footskip}{-16pt}
+}{\clearpage}
+
+\newcommand{\covercontent}[1]{&\underline{\makebox[10cm][c]{\quad#1\quad}}\\[0.5em]}
+
+% 上海科技大学logo
+\usepackage{graphicx}
+\newcommand{\universitylogo}[1]{\includegraphics[width=#1]{Image/logo.png}}
+
+% 设置页眉页脚
+\usepackage{fancyhdr}
+\fancyhf{} 						% 清空默认页眉页脚设置
+\fancyhead[L]{\universitylogo{4cm}}  		% 左页眉：logo
+\fancyhead[R]{\heiti\zihao{-5}\subject}	% 右页眉：标题
+\pagestyle{fancy}
+
+% 设置摘要和目录格式
+\newenvironment{frontpages}{	
+	\pagestyle{fancy}
+	\fancyfoot[C]{\thepage}			% 页码页脚居中
+	\pagenumbering{Roman}				% 罗马数字页码
+	\setcounter{page}{1}				% 重置页码
+}{\clearpage}
+
+\renewcommand{\abstract}[1]{\begin{center}{\heiti\zihao{4}摘要}\vspace{1em}\end{center}\par#1}
+\newcommand{\keyword}[1]{\vspace*{2em}\noindent{\heiti\zihao{-4}关键词：}#1}
+\newcommand{\subjecten}[1]{\begin{center}\vspace*{1em}{\zihao{3}\bfseries\uppercase{#1}}\vspace{1em}\end{center}}
+\newcommand{\abstracten}[1]{\begin{center}{\zihao{4}\bfseries ABSTRACT}\vspace{1em}\end{center}\par#1}
+\newcommand{\keyworden}[1]{\vspace*{2em}\noindent{\zihao{-4}\bfseries Key words: }#1}
+
+% 设置目录格式
+\usepackage{tocloft}
+% 标题
+\renewcommand{\cfttoctitlefont}{\hfill\heiti\zihao{3}}		% 黑体三号
+\renewcommand{\cftaftertoctitle}{\hfill}					% 居中
+\renewcommand{\contentsname}{目\hspace{1em}录\vspace{1em}}		% 后空一行
+% 内容
+\renewcommand{\cftsecfont}{\songti\zihao{5}}				% 宋体五号，下同
+\renewcommand{\cftsubsecfont}{\songti\zihao{5}}
+\renewcommand{\cftsecpagefont}{\songti\zihao{5}}
+% 加点
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}			% 标题和页码用点连接
+% 间距
+\setlength{\cftbeforesecskip}{0pt}						% 无间距
+
+% 设置正文格式
+\usepackage{lastpage}
+\usepackage{indentfirst}
+\newenvironment{mainmatter}{
+	\pagestyle{fancy}
+	\fancyfoot[C]{第\thepage 页\quad 共\pageref{LastPage}页}	% 中页脚：页码
+	\pagenumbering{arabic}
+	\setcounter{page}{1}
+}{\clearpage}
+
+% 设置正文标题格式
+\usepackage{titlesec}
+% 设置一级标题（section）格式
+\titleformat{\section}[block]
+{\centering\heiti\bfseries\zihao{3}}				% 黑体三号加粗
+{第\chinese{section}章}{1em}{}
+\makeatletter
+\let\oldsection\section
+\renewcommand{\section}{\@ifstar{\@sectionstar}{\@section}}
+% \section
+\newcommand{\@section}[1]{
+	\clearpage
+	{\zihao{3}
+	\vspace*{0pt}	% 前空一行
+	\oldsection{#1}
+	\vspace{1em}}	% 后空一行
+}
+% \section*
+\newcommand{\@sectionstar}[1]{
+	\clearpage
+	{\zihao{3}
+	\vspace*{0pt}	% 前空一行
+	\oldsection*{#1}
+	\vspace{1em}}	% 后空一行
+}
+\makeatother
+% 设置二级标题（subsection）格式
+\titleformat{\subsection}[hang]
+{\heiti\zihao{4}}							% 黑体四号
+{\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0.75cm}{0.5em}{0.5em}	% 缩进0.75cm
+% 设置三级标题（subsubsection）格式
+\titleformat{\subsubsection}[hang]
+{\songti\zihao{-4}}							% 宋体小四
+{\thesubsubsection}{1em}{}
+\titlespacing*{\subsubsection}{2em}{0pt}{0pt}		% 缩进2字符
+% 设置四级标题（subsubsubsection）格式
+\newcommand{\subsubsubsection}[1]{\paragraph{#1}}
+\setcounter{secnumdepth}{4}
+\titleformat{\paragraph}[hang]
+{\songti\zihao{-4}}									% 宋体小四
+{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}{2em}{0pt}{0pt}			% 缩进2字符
+
+% 设置分项格式
+\usepackage{enumitem}
+\setlist{itemsep=0pt, topsep=0pt, parsep=0pt, partopsep=0pt}
+\setlist[enumerate,1]{label=\songti(\arabic*),leftmargin=4em}
+\setlist[itemize]{leftmargin=4em}
+
+% 设置数学公式格式
+\usepackage{amsmath}
+% 设置公式按章节顺序编号
+\numberwithin{equation}{section}
+% 设置编号格式为“章节号-公式号”
+\renewcommand{\theequation}{\thesection-\arabic{equation}}
+
+% 设置表格格式
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{chngcntr}
+% 设置表题格式
+\captionsetup[table]{font=bf,position=above,labelsep=quad,justification=centering}
+% 设置表格按章节顺序编号
+\counterwithin{table}{section}
+% 设置编号格式为“章节号-表格号”
+\renewcommand{\thetable}{\thesection-\arabic{table}}
+
+% 设置图片格式
+\captionsetup[figure]{font=bf,position=below,labelsep=quad,justification=centering}
+% 设置图片按章节顺序编号
+\numberwithin{figure}{section}
+% 设置编号格式为“章节号-图片号”
+\renewcommand{\thefigure}{\thesection-\arabic{figure}}
+
+% 设置参考文献和致谢格式
+\newenvironment{backmatter}{
+	\pagestyle{fancy}
+	\fancyfoot[C]{第\thepage 页\quad 共\pageref{LastPage}页}	% 中页脚：页码
+}{\clearpage}
+
+% 设置引用格式
+\usepackage{cite}
+\let\oldcite\cite
+\renewcommand{\cite}[1]{\textsuperscript{\oldcite{#1}}}	% 上标
